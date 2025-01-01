@@ -1,0 +1,28 @@
+{
+	"folders": [
+		{
+			"path": "../../../.docker"
+		},
+		{
+			"path": "../../../.k8slens"
+		},
+		{
+			"path": "../../../.kaggle"
+		},
+		{
+			"path": "../../../.kube"
+		},
+		{
+			"path": "../../../.matplotlib"
+		},
+		{
+			"path": "../../../.cache"
+		},
+		{
+			"path": "../../../.conda"
+		},
+		{
+			"path": "../../../.continuum"
+		}
+	]
+}
