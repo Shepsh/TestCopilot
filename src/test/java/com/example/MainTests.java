@@ -1,28 +1,39 @@
-package src.test.java.com.example;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.ResponseEntity;
+package com.example;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
+
+@SpringBootTest(classes = Main.class)
+@AutoConfigureMockMvc
 public class MainTests {
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private MockMvc mockMvc;
 
     @Test
-    public void testReadRoot() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/", String.class);
-        assertThat(response.getBody()).contains("Hello, world!");
+    void contextLoads() {
+        assertThat(mockMvc).isNotNull();
     }
 
     @Test
-    public void testReadItem() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/square/4", String.class);
-        assertThat(response.getBody()).contains("\"square\":16");
+    void testReadRoot() throws Exception {
+        mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Hello, world!"));
+    }
+
+    @Test
+    void testSquare() throws Exception {
+        mockMvc.perform(get("/square/4"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.square").value(16));
     }
 }
